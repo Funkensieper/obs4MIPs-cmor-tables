@@ -147,7 +147,8 @@ fH.close()
 jsonOmon = 'obs4MIPs_Omon_composite.json'
 buildList = [
  ['coordinate','https://raw.githubusercontent.com/PCMDI/obs4MIPs-cmor-tables/master/obs4MIPs_coordinate.json'],
- ['Omon','https://raw.githubusercontent.com/PCMDI/obs4MIPs-cmor-tables/master/Tables/obs4MIPs_Omon.json']
+ ['Omon','https://raw.githubusercontent.com/PCMDI/obs4MIPs-cmor-tables/master/Tables/obs4MIPs_Omon.json'],
+ ['Amon','https://raw.githubusercontent.com/PCMDI/obs4MIPs-cmor-tables/master/Tables/obs4MIPs_Amon.json']
  ] ;
 
 # Loop through buildList and create output tables
@@ -167,11 +168,12 @@ for count,CV in enumerate(buildList):
         for count in range(len(keys)):
             table[keys[count]] = eval(CVName1).get(keys[count])
 
-outFile = jsonOmon
+    if CV[0] == 'Omon': outFile = 'obs4MIPs_Omon_composite.json'
+    if CV[0] == 'Amon': outFile = 'obs4MIPs_Amon_composite.json' 
 # Check file exists
-if os.path.exists(outFile):
-    print 'File existing, purging:',outFile
-    os.remove(outFile)
-fH = open(outFile,'w')
-json.dump(table,fH,ensure_ascii=True,sort_keys=True,indent=4,separators=(',',':'),encoding="utf-8")
-fH.close()
+    if os.path.exists(outFile):
+      print 'File existing, purging:',outFile
+      os.remove(outFile)
+    fH = open(outFile,'w')
+    json.dump(table,fH,ensure_ascii=True,sort_keys=True,indent=4,separators=(',',':'),encoding="utf-8")
+    fH.close()
